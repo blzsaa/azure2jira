@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Azure2Jira settings</title>
+    <link rel="stylesheet" href="options.css" />
+    <link rel="stylesheet" href="simple-grid.css" />
+    <link rel="icon" type="image/x-icon" href="/icons/favicon-16x16.png" />
+  </head>
+  <body class="container">
+    <div class="center">
+      <h1>Azure2Jira options</h1>
+    </div>
+    <div hidden id="success-message" class="alert-success center"></div>
+
+    <form>
+      <div class="row">
+        <div class="col-2"><label for="jiraBaseUrl">Jira base URL:</label></div>
+        <div class="col-10">
+          <input required style="width: 100%" id="jiraBaseUrl" type="url" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 label-like">Link will be:</div>
+        <div class="col-10">
+          <a id="exampleJiraUrl"></a>
+        </div>
+      </div>
+      <div class="center">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+
+    <script type="module" src="options.ts"></script>
+  </body>
+</html>
