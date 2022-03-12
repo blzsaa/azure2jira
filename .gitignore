@@ -1,0 +1,6 @@
+.idea
+.parcel-cache
+dist
+node_modules
+web-ext-artifacts
+src/manifest.json

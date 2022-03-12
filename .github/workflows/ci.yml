@@ -1,0 +1,26 @@
+name: azure2jira CI
+on: [pull_request]
+jobs:
+  code_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm install npm@latest -g
+      - run: npm ci
+      - run: npm start lint.check
+  commit_message_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v4
+  unit_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm install npm@latest -g
+      - run: npm ci
+      - run: npm test
