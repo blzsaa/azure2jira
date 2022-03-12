@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint:check": "web-ext lint --warnings-as-errors & eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "build": "parcel build src/manifest.json --no-content-hash --no-source-maps --dist-dir dist --no-cache --detailed-report 0",
+    "build:zip": "web-ext build",
+    "watch": "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr",
+    "start:firefox": "web-ext run --browser-console",
+    "start:chromium": "web-ext run -t chromium --browser-console"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "webextension-polyfill": "^0.8.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@parcel/config-webextension": "^2.3.2",
+    "@parcel/transformer-image": "^2.3.2",
+    "@types/jest": "^27.4.1",
+    "@types/webextension-polyfill": "^0.8.2",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "mockzilla": "^0.12.0",
+    "mockzilla-webextension": "^0.13.0",
+    "parcel": "^2.3.2",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.3",
+    "web-ext": "^6.7.0",
+    "webextension-polyfill": "^0.8.0"
+  },
+  "webExt": {
+    "sourceDir": "dist"
+  }
+}
