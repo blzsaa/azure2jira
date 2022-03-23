@@ -10,8 +10,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         id: release
         with:
-          release-type: node
-          package-name: release-please-action
+          release-type: simple
           version-file: "src/manifest.json"
       - name: Show output from Release-Please
         run: |
