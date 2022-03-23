@@ -12,8 +12,10 @@ jobs:
         with:
           release-type: node
           package-name: release-please-action
+          version-file: "src/manifest.json"
       - name: Show output from Release-Please
         run: |
+          echo "release_created: ${{ steps.release.outputs.* }}"
           echo "release_created: ${{ steps.release.outputs.release_created }}"
           echo "upload_url: ${{ steps.release.outputs.upload_url }}"
           echo "html_url: ${{ steps.release.outputs.html_url }}"
@@ -28,4 +30,4 @@ jobs:
       - name: Display
         run: |
           echo "Step 1 test: ${{ steps.step1.outputs.test }}"
-          echo "Step 2 test: ${{ steps.step1.outputs.test }}"
+          echo "Step 2 test: ${{ steps.step2.outputs.test }}"

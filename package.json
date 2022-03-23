@@ -1,5 +1,6 @@
 {
   "private": true,
+  "name": "azure2jira",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
