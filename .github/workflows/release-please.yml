@@ -10,8 +10,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         id: release
         with:
-          release-type: simple
-          version-file: "src/manifest.json"
+          release-type: node
       - name: Show output from Release-Please
         run: |
           echo "release_created: ${{ steps.release.outputs.* }}"
@@ -30,4 +29,3 @@ jobs:
         run: |
           echo "Step 1 test: ${{ steps.step1.outputs.test }}"
           echo "Step 2 test: ${{ steps.step2.outputs.test }}"
-        if: ${{ steps.release.outputs.release_created }}
