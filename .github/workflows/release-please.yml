@@ -21,3 +21,11 @@ jobs:
           echo "major: ${{ steps.release.outputs.major }}"
           echo "minor: ${{ steps.release.outputs.minor }}"
           echo "patch: ${{ steps.release.outputs.patch }}"
+      - id: step1
+        run: echo "::set-output name=test::hello"
+      - id: step2
+        run: echo "::set-output name=test::world"
+      - name: Display
+        run: |
+          echo "Step 1 test: ${{ steps.step1.outputs.test }}"
+          echo "Step 2 test: ${{ steps.step1.outputs.test }}"
