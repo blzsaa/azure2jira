@@ -9,7 +9,8 @@
     "build:zip": "web-ext build",
     "watch": "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr",
     "start:firefox": "web-ext run --browser-console",
-    "start:chromium": "web-ext run -t chromium --browser-console"
+    "start:chromium": "web-ext run -t chromium --browser-console",
+    "rp": "release-please"
   },
   "license": "MIT",
   "dependencies": {
