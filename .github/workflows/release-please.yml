@@ -11,6 +11,7 @@ jobs:
         id: release
         with:
           release-type: node
+          path: .
       - name: Show output from Release-Please
         run: |
           echo "release_created: ${{ steps.release.outputs.* }}"
