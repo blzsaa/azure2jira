@@ -1,29 +1,34 @@
 on:
   push:
     branches:
-      - test
+      - main
 name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release
-      - name: Show output from Release-Please
-        run: |
-          echo "release_created: ${{ steps.release.outputs.* }}"
-          echo "release_created: ${{ steps.release.outputs.release_created }}"
-          echo "upload_url: ${{ steps.release.outputs.upload_url }}"
-          echo "html_url: ${{ steps.release.outputs.html_url }}"
-          echo "tag_name: ${{ steps.release.outputs.tag_name }}"
-          echo "major: ${{ steps.release.outputs.major }}"
-          echo "minor: ${{ steps.release.outputs.minor }}"
-          echo "patch: ${{ steps.release.outputs.patch }}"
-      - id: step1
-        run: echo "::set-output name=test::hello"
-      - id: step2
-        run: echo "::set-output name=test::world"
-      - name: Display
-        run: |
-          echo "Step 1 test: ${{ steps.step1.outputs.test }}"
-          echo "Step 2 test: ${{ steps.step2.outputs.test }}"
+        with:
+          command: manifest
+  release:
+    needs: [release-please]
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - run: npm install npm@latest -g
+      - run: npm ci
+      - name: Create archive to release
+        run: npm run build:zip
+      - name: Add archive to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: web-ext-artifacts/*
+          tag_name: ${{ needs.release-please.outputs.tag_name }}

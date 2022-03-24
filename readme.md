@@ -7,15 +7,22 @@ Azure2Jira adds links to Jira user stories from Azure UI
 - set jira base url at option page
 - transform jira-id texts to link to the jira user stories under
   `https://dev.azure.com/` pages
-- the following subpages are supported:
+- currently, the following subpages are supported:
   - Repos/Commits page
   - Repos/files page
   - Repos/Pull requests page
 
-### Run the extension
+## Run the extension for developing purposes
 
 1. run `npm run watch` to watch for file changes and build continuously
 1. in another terminal, run `npm run start:firefox` or `npm run start:chrome` for Firefox or Chrome
+
+## Install the extension
+
+1. run `npm run build:zip`
+2. load the extension manually from `./web-ext-artifacts` directory to
+   [Chrome](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#google-chrome-opera-vivaldi)
+   or [Firefox](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#mozilla-firefox)
 
 ## Contributing
 
