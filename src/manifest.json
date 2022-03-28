@@ -1,15 +1,17 @@
 {
   "manifest_version": 2,
   "name": "Azure2Jira",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "background": {
-    "scripts": ["background.ts"]
+    "scripts": [
+      "background.ts"
+    ]
   },
   "description": "Add links to Jira user stories from Azure UI",
   "homepage_url": "https://github.com/",
   "icons": {
-    "32": "../icons/favicon-32x32.png",
-    "16": "../icons/favicon-16x16.png"
+    "16": "../icons/favicon-16x16.png",
+    "32": "../icons/favicon-32x32.png"
   },
   "browser_action": {
     "default_icon": "../icons/favicon-32x32.png",
@@ -19,7 +21,9 @@
     "page": "options/options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "addon@example.com"
@@ -27,8 +31,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://dev.azure.com/*"],
-      "js": ["linkify.ts"]
+      "matches": [
+        "https://dev.azure.com/*"
+      ],
+      "js": [
+        "linkify.ts"
+      ]
     }
   ]
 }
