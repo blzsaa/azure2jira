@@ -4,7 +4,8 @@ Azure2Jira adds links to Jira user stories from Azure UI
 
 ## Features
 
-- set jira base url at option page
+- options page to set jira base url
+- notify users while they are browsing `https://dev.azure.com/` pages and the extension is not setup
 - transform jira-id texts to link to the jira user stories under
   `https://dev.azure.com/` pages
 - currently, the following subpages are supported:

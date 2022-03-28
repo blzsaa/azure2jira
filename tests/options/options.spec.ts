@@ -2,7 +2,7 @@ import {
   createDummyJiraLinkFromInput,
   loadCurrentValues,
   saveOptions,
-} from "@/popup/options";
+} from "@/options/options";
 
 describe("Options", () => {
   beforeEach(() => {
