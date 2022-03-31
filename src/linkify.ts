@@ -39,9 +39,8 @@ function linkifyJiraIssues(jiraBaseUrl: string) {
     if (div) {
       const b = div.innerText;
       const newContent = b.replaceAll(
-        /([A-Z]+-\d+)/g,
-        (ticketId: string) =>
-          `<a href="${jiraBaseUrl}/browse/${ticketId}">${ticketId}</a>`
+        /(\s|^)([A-Z]+-\d+)(\s|$)/g,
+        `$1<a href="${jiraBaseUrl}/browse/$2">$2</a>$3` // $n -> nth regex group
       );
       div.replaceChildren(
         ...parser.parseFromString(newContent, "text/html").body.childNodes
