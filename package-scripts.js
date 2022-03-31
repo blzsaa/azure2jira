@@ -9,11 +9,8 @@ module.exports = {
       watch: series(generateManifest, "jest --watch"),
     },
     lint: {
-      check: series(
-        "web-ext lint --warnings-as-errors",
-        "eslint .",
-        "prettier --check ."
-      ),
+      webExt: series("nps build", "web-ext lint --warnings-as-errors"),
+      check: series("nps lint.webExt", "eslint .", "prettier --check ."),
       fix: series("eslint . --fix", " prettier --write ."),
     },
     build: {

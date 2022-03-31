@@ -1,3 +1,6 @@
+[![nps friendly](https://img.shields.io/badge/nps-friendly-brightgreen.svg?)](https://github.com/sezna/nps)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 # Azure2Jira
 
 Azure2Jira adds links to Jira user stories from Azure UI
