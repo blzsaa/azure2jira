@@ -25,9 +25,7 @@ module.exports = {
       generateManifest,
       "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr"
     ),
-    start: {
-      firefox: "web-ext run --browser-console",
-      chromium: "web-ext run -t chromium --browser-console",
-    },
+    firefox: "web-ext run --browser-console",
+    chrome: "web-ext run -t chromium --browser-console",
   },
 };

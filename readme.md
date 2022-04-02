@@ -19,7 +19,7 @@ Azure2Jira adds links to Jira user stories from Azure UI
 ## Run the extension for developing purposes
 
 1. run `npm start watch` to watch for file changes and build continuously
-1. in another terminal, run `npm start start.firefox` or `npm start start.chrome` for Firefox or Chrome
+1. in another terminal, run `npm start firefox` or `npm start chrome` for Firefox or Chrome
 
 ## Install the extension
 
