@@ -1,4 +1,5 @@
-import browser from "webextension-polyfill";
+import browser, { Tabs } from "webextension-polyfill";
+import Tab = Tabs.Tab;
 
 export async function saveOptions(e: Event) {
   e.preventDefault();
@@ -15,7 +16,15 @@ export async function saveOptions(e: Event) {
   if (successMessageDiv) {
     successMessageDiv.removeAttribute("hidden");
     successMessageDiv.innerText = `Saved ${jiraBaseUrl}`;
+    await refreshAzureDevopsTabs();
   }
+}
+
+async function refreshAzureDevopsTabs() {
+  const tabs = await browser.tabs.query({ url: "https://dev.azure.com/*" });
+  tabs
+    .map((tab: Tab) => tab.id)
+    .forEach((id: number | undefined) => browser.tabs.reload(id));
 }
 
 export function createDummyJiraLinkFromInput() {

@@ -16,8 +16,14 @@ describe("Options", () => {
 
   describe("saveOptions()", () => {
     it("should save it to storage and notify user about successful saving", async () => {
+      const tabs: any[] = [{ id: 1 }, { id: 3 }];
+      mockBrowser.tabs.query
+        .expect({ url: "https://dev.azure.com/*" })
+        .andResolve(tabs);
       document.querySelector("input")!!.value = "aaaaa";
       mockBrowser.storage.sync.set.expect({ jiraBaseUrl: "aaaaa/" });
+      mockBrowser.tabs.reload.expect(1);
+      mockBrowser.tabs.reload.expect(3);
 
       await saveOptions(new Event("does not matter"));
 
