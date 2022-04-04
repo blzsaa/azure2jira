@@ -18,7 +18,7 @@
     "page": "options/options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "https://dev.azure.com/*"],
   "browser_specific_settings": {
     "gecko": {
       "id": "addon@example.com"
