@@ -21,7 +21,7 @@ describe("Options", () => {
         .expect({ url: "https://dev.azure.com/*" })
         .andResolve(tabs);
       document.querySelector("input")!!.value = "aaaaa";
-      mockBrowser.storage.sync.set.expect({ jiraBaseUrl: "aaaaa/" });
+      mockBrowser.storage.sync.set.expect({ jiraBaseUrl: "aaaaa" });
       mockBrowser.tabs.reload.expect(1);
       mockBrowser.tabs.reload.expect(3);
 

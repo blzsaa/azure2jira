@@ -3,11 +3,8 @@ import Tab = Tabs.Tab;
 
 export async function saveOptions(e: Event) {
   e.preventDefault();
-  const valueFromInput =
+  const jiraBaseUrl =
     document.querySelector<HTMLInputElement>("#jiraBaseUrl")!!.value;
-  const jiraBaseUrl = valueFromInput.endsWith("/")
-    ? valueFromInput
-    : `${valueFromInput}/`;
   await browser.storage.sync.set({
     jiraBaseUrl: jiraBaseUrl,
   });

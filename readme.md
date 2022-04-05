@@ -16,12 +16,16 @@ Azure2Jira adds links to Jira user stories from Azure UI
   - Repos/files page
   - Repos/Pull requests page
 
-## Run the extension for developing purposes
+## Developing
 
 1. run `npm start watch` to watch for file changes and build continuously
-1. in another terminal, run `npm start firefox` or `npm start chrome` for Firefox or Chrome
+1. open another terminal and run
+   - `npm start firefox` for testing in firefox
+   - `npm start chrome` for testing in chrome
+   - `npm start test.watch.unit` for writing unit tests
+   - `npm start test.watch.e2e` for writing e2e tests
 
-## Install the extension
+## Install the extension to a browser
 
 1. run `npm start build.zip`
 2. load the extension manually from `./web-ext-artifacts` directory to
