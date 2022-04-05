@@ -97,16 +97,17 @@ describe("e2e test", () => {
   async function getBrowserWithExtension() {
     const pathToExtension = path.join(__dirname, "..", "..", "dist");
     const puppeteerArgs = [
+      "--no-sandbox",
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
       "--show-component-extension-options",
     ];
-
+    // Chrome Headless doesn't support extensions
+    // https://github.com/puppeteer/puppeteer/issues/659#issuecomment-326754863
     return await puppeteer.launch({
-      // Chrome Headless doesn't support extensions
-      // https://github.com/puppeteer/puppeteer/issues/659#issuecomment-326754863
-      headless: false,
       args: puppeteerArgs,
+      executablePath: process.env.PUPPETEER_EXEC_PATH,
+      headless: false,
     });
   }
 
