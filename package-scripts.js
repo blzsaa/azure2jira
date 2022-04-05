@@ -5,8 +5,13 @@ const generateManifest = 'node "tasks/generate-manifest.js"';
 module.exports = {
   scripts: {
     test: {
-      default: series(generateManifest, "jest"),
-      watch: series(generateManifest, "jest --watch"),
+      default: series("nps test.unit", "nps test.e2e"),
+      unit: series(generateManifest, "jest --testPathPattern=tests/unit"),
+      e2e: series("nps build", "jest --testPathPattern=tests/e2e"),
+      watch: {
+        unit: "jest --testPathPattern=tests/unit --watch",
+        e2e: "jest --testPathPattern=tests/e2e --watch",
+      },
     },
     lint: {
       webExt: series("nps build", "web-ext lint --warnings-as-errors"),
