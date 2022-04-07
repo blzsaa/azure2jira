@@ -26,10 +26,14 @@ module.exports = {
       ),
       zip: series(generateManifest, "web-ext build --overwrite-dest"),
     },
-    watch: series(
-      generateManifest,
-      "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr"
-    ),
+    watch: {
+      default:
+        "nodemon --watch src/manifest_template.json --exec npm run start watch._watch",
+      _watch: series(
+        generateManifest,
+        "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr"
+      ),
+    },
     firefox: "web-ext run --browser-console",
     chrome: "web-ext run -t chromium --browser-console",
   },
