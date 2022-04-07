@@ -1,28 +1,24 @@
-describe("linkify", () => {
+import {
+  linkifyJiraIssues,
+  notifyUserAboutMissingConfig,
+} from "@/linkify-actor";
+
+describe("linkify-actor", () => {
   afterEach(() => {
     jest.resetModules();
     document.getElementsByTagName("html")[0].innerHTML = "";
   });
 
-  describe("when jiraBaseUrl is not set", () => {
-    it("should notify user about it", async () => {
-      mockBrowser.storage.sync.get
-        .expect("jiraBaseUrl")
-        .andResolve({ jiraBaseUrl: undefined });
-
-      await require("@/linkify");
+  describe("notifyUserAboutMissingConfig", () => {
+    it("should add notification message to the website", async () => {
+      notifyUserAboutMissingConfig();
 
       expect("#azure-2-jira-missing-config-message").hasInnerText(
-        "The Azure2Jira extension is not set up! Please open settings page of the extension!"
+        "The Azure2Jira extension is not set up! Please open options page of the extension!"
       );
     });
   });
-  describe("when jiraBaseUrl is set", () => {
-    beforeEach(() => {
-      mockBrowser.storage.sync.get
-        .expect("jiraBaseUrl")
-        .andResolve({ jiraBaseUrl: "https://jiraUrl.org" });
-    });
+  describe("linkifyJiraIssues", () => {
     describe("should transform simple jira IDs to links", () => {
       const expected = expectedJiraIdAsLink("ASD-123");
 
@@ -38,7 +34,7 @@ describe("linkify", () => {
           under: document.body,
         });
 
-        await require("@/linkify");
+        runLinkifyJiraIssues();
 
         expect(".commit-title").hasInnerHTML(expected);
         expect(".not-commit-title").not.hasInnerHTML(expected);
@@ -55,7 +51,7 @@ describe("linkify", () => {
           under: document.body,
         });
 
-        await require("@/linkify");
+        runLinkifyJiraIssues();
 
         expect(".repos-folder-list-comment").hasInnerHTML(expected);
         expect(".not-repos-folder-list-comment").not.hasInnerHTML(expected);
@@ -88,7 +84,7 @@ describe("linkify", () => {
           under: div,
         });
 
-        await require("@/linkify");
+        runLinkifyJiraIssues();
 
         expect("#divWithRoleUnderColumnIndex1").hasInnerHTML(expected);
         expect("#divWithRoleUnderColumnIndex2").not.hasInnerHTML(expected);
@@ -103,7 +99,7 @@ describe("linkify", () => {
           under: document.body,
         });
 
-        await require("@/linkify");
+        runLinkifyJiraIssues();
 
         expect(".commit-title").hasInnerHTML(
           "abc " + expectedJiraIdAsLink("ASD-123") + " abc"
@@ -116,7 +112,7 @@ describe("linkify", () => {
           under: document.body,
         });
 
-        await require("@/linkify");
+        runLinkifyJiraIssues();
 
         expect(".commit-title").hasInnerHTML(
           "abc " +
@@ -196,7 +192,11 @@ async function shouldNotParseTheFollowingAsJiraId(wrongContent: string) {
     under: document.body,
   });
 
-  await require("@/linkify");
+  runLinkifyJiraIssues();
 
   expect(".commit-title").hasInnerHTML(wrongContent);
+}
+
+function runLinkifyJiraIssues() {
+  linkifyJiraIssues(document.body, new DOMParser(), "https://jiraUrl.org");
 }

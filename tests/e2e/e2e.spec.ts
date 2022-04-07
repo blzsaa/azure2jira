@@ -20,11 +20,11 @@ describe("e2e test", () => {
     });
 
     afterEach(async () => {
-      await page.close();
+      await page?.close();
     });
 
     afterAll(async () => {
-      await browser.close();
+      await browser?.close();
     });
 
     it("should create links for pages under dev.azure.com", async () => {
@@ -55,6 +55,28 @@ describe("e2e test", () => {
       expect(await innerHtmlOf("#wrong-class")).toBe("WRONG-123");
       expect(await innerHtmlOf("#wrong-role")).toBe("WRONG-123");
       expect(await innerHtmlOf("#wrong-index")).toBe("WRONG-123");
+    });
+
+    it("should create links for content appearing not only at domcontentloaded time but later as well", async () => {
+      const dummySPA = `document.body.innerHTML+="<div><div id='new-commit-page' class='commit-title'>fix ASD-124</div></div>"`;
+      mockDevAzureWebsite([
+        '<div id="commit-page" class="commit-title">fix <a href="https://asd.com/browse/ASD-123">ASD-123</a></div>',
+        `<button onclick="${dummySPA}"</button>`,
+      ]);
+      await page.goto("https://dev.azure.com/sub-page", {
+        waitUntil: "domcontentloaded",
+      });
+
+      await page.click("button");
+
+      await page.waitForXPath('//*[@id="new-commit-page"]/a');
+
+      expect(await innerHtmlOf("#commit-page")).toBe(
+        'fix <a href="https://asd.com/browse/ASD-123">ASD-123</a>'
+      );
+      expect(await innerHtmlOf("#new-commit-page")).toBe(
+        'fix <a href="https://asd.com/browse/ASD-124">ASD-124</a>'
+      );
     });
   });
 
@@ -89,7 +111,7 @@ describe("e2e test", () => {
       expect(
         await innerHtmlOf("#azure-2-jira-missing-config-message")
       ).toContain(
-        "The Azure2Jira extension is not set up! Please open settings page of the extension!"
+        "The Azure2Jira extension is not set up! Please open options page of the extension!"
       );
     });
   });
@@ -108,6 +130,7 @@ describe("e2e test", () => {
       args: puppeteerArgs,
       executablePath: process.env.PUPPETEER_EXEC_PATH,
       headless: false,
+      devtools: true,
     });
   }
 
