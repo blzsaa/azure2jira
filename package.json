@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nps",
     "test": "nps test",
-    "commit": "cz"
+    "commit": "cz",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "dependencies": {
