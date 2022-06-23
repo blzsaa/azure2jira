@@ -21,6 +21,7 @@ describe("e2e test", () => {
 
     afterEach(async () => {
       await page?.close();
+      nock.cleanAll();
     });
 
     afterAll(async () => {
@@ -37,9 +38,7 @@ describe("e2e test", () => {
         '<div data-column-index="0"><span id="wrong-index" role="button">WRONG-123</span></div>',
       ]);
 
-      await page.goto("https://dev.azure.com/sub-page", {
-        waitUntil: "domcontentloaded",
-      });
+      await awaitUntil(page).navigatesTo("https://dev.azure.com/sub-page");
 
       await page.waitForSelector("a");
 
@@ -63,9 +62,7 @@ describe("e2e test", () => {
         '<div id="commit-page" class="commit-title">fix <a href="https://asd.com/browse/ASD-123">ASD-123</a></div>',
         `<button onclick="${dummySPA}"</button>`,
       ]);
-      await page.goto("https://dev.azure.com/sub-page", {
-        waitUntil: "domcontentloaded",
-      });
+      await awaitUntil(page).navigatesTo("https://dev.azure.com/sub-page");
 
       await page.click("button");
 
@@ -91,6 +88,7 @@ describe("e2e test", () => {
 
     afterEach(async () => {
       await page.close();
+      nock.cleanAll();
     });
 
     afterAll(async () => {
@@ -102,9 +100,7 @@ describe("e2e test", () => {
         '<div id="commit-page" class="commit-title">fix ASD-123</div>',
       ]);
 
-      await page.goto("https://dev.azure.com/sub-page", {
-        waitUntil: "domcontentloaded",
-      });
+      await awaitUntil(page).navigatesTo("https://dev.azure.com/sub-page");
 
       await page.waitForSelector("#azure-2-jira-missing-config-message");
       expect(await innerHtmlOf("#commit-page")).toBe("fix ASD-123");
@@ -130,7 +126,7 @@ describe("e2e test", () => {
       args: puppeteerArgs,
       executablePath: process.env.PUPPETEER_EXEC_PATH,
       headless: false,
-      devtools: true,
+      devtools: false,
     });
   }
 
@@ -154,7 +150,10 @@ describe("e2e test", () => {
     const page = await browser.newPage();
     const chromeExtPath = `chrome-extension://${extensionId}/options/options.html`;
 
-    await page.goto(chromeExtPath, { waitUntil: "domcontentloaded" });
+    await awaitUntil(page).navigatesTo(chromeExtPath);
+
+    await page.waitForSelector("input", { visible: true });
+    await page.waitForSelector("button", { visible: true });
 
     await page.click("input");
     await page.keyboard.type("https://asd.com");
@@ -180,3 +179,26 @@ describe("e2e test", () => {
       );
   }
 });
+
+function awaitUntil(page: Page) {
+  return new (class {
+    async navigatesTo(url: string) {
+      let success = false;
+      let tries = 0;
+      while (!success && tries < 5) {
+        try {
+          await page.goto(url, {
+            waitUntil: "domcontentloaded",
+            timeout: 1000,
+          });
+          success = true;
+        } catch (e) {
+          tries++;
+        }
+      }
+      if (!success) {
+        throw new Error(`goto webpage: ${url} timed out after ${tries} second`);
+      }
+    }
+  })();
+}
