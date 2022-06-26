@@ -5,7 +5,7 @@
     "scripts": ["background.ts"]
   },
   "description": "Add links to Jira user stories from Azure UI",
-  "homepage_url": "https://github.com/",
+  "homepage_url": "https://github.com/blzsaa/azure2jira",
   "icons": {
     "16": "../icons/favicon-16x16.png",
     "32": "../icons/favicon-32x32.png"
@@ -21,7 +21,7 @@
   "permissions": ["storage", "https://dev.azure.com/*"],
   "browser_specific_settings": {
     "gecko": {
-      "id": "addon@example.com"
+      "id": "{21ece0dd-1275-4b2b-bdc8-f574c53d347e}"
     }
   },
   "content_scripts": [
