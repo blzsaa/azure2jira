@@ -55,7 +55,7 @@ function createLink(div: HTMLElement, parser: DOMParser, jiraBaseUrl: string) {
   if (div) {
     const b = div.innerText;
     const newContent = b.replaceAll(
-      /(\s|^)([A-Z]+-\d+)(\s|$)/g,
+      /(.*?)([A-Z]+-\d+)(.*?)/g,
       `$1<a href="${jiraBaseUrl}/browse/$2">$2</a>$3` // $n -> nth regex group
     );
     div.replaceChildren(
