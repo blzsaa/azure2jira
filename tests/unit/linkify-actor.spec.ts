@@ -91,19 +91,15 @@ describe("linkify-actor", () => {
         expect("#divWithWrongRoleUnderColumnIndex1").not.hasInnerHTML(expected);
       });
     });
-    describe("should find jira IDs and transform to link from complicated descriptions as well", () => {
+    describe("when processing possible jira IDs", () => {
       it("should find jira ID even when it is not first part of the description", async () => {
-        createElement("div", {
-          class: ["commit-title"],
-          innerText: "abc ASD-123 abc",
-          under: document.body,
-        });
-
-        runLinkifyJiraIssues();
-
-        expect(".commit-title").hasInnerHTML(
-          "abc " + expectedJiraIdAsLink("ASD-123") + " abc"
-        );
+        await shouldParseTheFollowingAsJiraId("abc ASD-123 abc");
+      });
+      it("should find jira ID even when written together with other words", async () => {
+        await shouldParseTheFollowingAsJiraId("messageASD-123:");
+      });
+      it("should find jira ID even when written together with emojies", async () => {
+        await shouldParseTheFollowingAsJiraId("🚀ASD-123🚀");
       });
       it("should find multiple jira IDs", async () => {
         createElement("div", {
@@ -131,12 +127,6 @@ describe("linkify-actor", () => {
       });
       it("should ignore jira IDs without dash sign", async () => {
         await shouldNotParseTheFollowingAsJiraId("ASD123");
-      });
-      it("should ignore words followed by jira IDs without space", async () => {
-        await shouldNotParseTheFollowingAsJiraId("messageASD-123");
-      });
-      it("should ignore jira IDs followed by words  without space", async () => {
-        await shouldNotParseTheFollowingAsJiraId("message ASD-123message");
       });
     });
   });
@@ -183,6 +173,21 @@ function createElement(
 }
 function expectedJiraIdAsLink(expectedJiraId: string) {
   return `<a href="https://jiraUrl.org/browse/${expectedJiraId}">${expectedJiraId}</a>`;
+}
+
+async function shouldParseTheFollowingAsJiraId(content: string) {
+  const asd = content.split("ASD-123");
+  createElement("div", {
+    class: ["commit-title"],
+    innerText: content,
+    under: document.body,
+  });
+
+  runLinkifyJiraIssues();
+
+  expect(".commit-title").hasInnerHTML(
+    asd[0] + expectedJiraIdAsLink("ASD-123") + asd[1]
+  );
 }
 
 async function shouldNotParseTheFollowingAsJiraId(wrongContent: string) {
