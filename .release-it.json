@@ -1,0 +1,21 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}"
+  },
+  "github": {
+    "release": true,
+    "assets": ["web-ext-artifacts/azure2jira-{version}.zip"]
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "npm": {
+    "publish": false
+  },
+  "hooks": {
+    "after:bump": "npm start build.zip"
+  }
+}
