@@ -24,7 +24,7 @@ module.exports = {
         "parcel build src/manifest.json --no-content-hash --no-source-maps " +
           "--dist-dir dist --no-cache --detailed-report 0"
       ),
-      zip: series(generateManifest, "web-ext build --overwrite-dest"),
+      zip: series("nps build", "web-ext build --overwrite-dest"),
     },
     watch: {
       default:
