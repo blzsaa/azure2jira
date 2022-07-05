@@ -1,5 +1,6 @@
 import { Browser, Page } from "puppeteer";
 import path from "path";
+import * as fs from "fs";
 
 const puppeteer = require("puppeteer");
 const nock = require("nock");
@@ -148,7 +149,10 @@ describe("e2e test", () => {
     const extensionId = getIdForAzure2JiraExtension();
 
     const page = await browser.newPage();
-    const chromeExtPath = `chrome-extension://${extensionId}/options/options.html`;
+    const optionsPage: string = fs
+      .readdirSync("dist")
+      .find((file) => file.startsWith("options") && file.endsWith(".html"))!;
+    const chromeExtPath = `chrome-extension://${extensionId}/${optionsPage}`;
 
     await awaitUntil(page).navigatesTo(chromeExtPath);
 

@@ -4,6 +4,7 @@ const generateManifest = 'node "tasks/generate-manifest.js"';
 
 module.exports = {
   scripts: {
+    clean: "rimraf dist",
     test: {
       default: series("nps test.unit", "nps test.e2e"),
       unit: series(generateManifest, "jest --testPathPattern=tests/unit"),
@@ -20,6 +21,7 @@ module.exports = {
     },
     build: {
       default: series(
+        "nps clean",
         generateManifest,
         "parcel build src/manifest.json --no-content-hash --no-source-maps " +
           "--dist-dir dist --no-cache --detailed-report 0"
@@ -30,8 +32,9 @@ module.exports = {
       default:
         "nodemon --watch src/manifest_template.json --exec npm run start watch._watch",
       _watch: series(
+        "nps clean",
         generateManifest,
-        "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr"
+        "parcel watch src/manifest.json --dist-dir dist --no-cache --no-content-hash --no-hmr"
       ),
     },
     firefox: "web-ext run --browser-console",
