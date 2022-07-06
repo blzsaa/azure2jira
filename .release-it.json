@@ -4,7 +4,10 @@
   },
   "github": {
     "release": true,
-    "assets": ["web-ext-artifacts/azure2jira-{version}.zip"]
+    "assets": [
+      "web-ext-artifacts/azure2jira-firefox-${version}.zip",
+      "web-ext-artifacts/azure2jira-chrome-${version}.zip"
+    ]
   },
   "plugins": {
     "@release-it/conventional-changelog": {
@@ -16,6 +19,6 @@
     "publish": false
   },
   "hooks": {
-    "after:bump": "npm start build.zip"
+    "after:bump": "npm start zip"
   }
 }

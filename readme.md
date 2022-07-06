@@ -27,10 +27,17 @@ Azure2Jira adds links to Jira user stories from Azure UI
 
 ## Install the extension to a browser
 
-1. run `npm start build.zip`
+### Firefox
+
+1. run `npm start zip.firefox` to create a zip file for the extension
 2. load the extension manually from `./web-ext-artifacts` directory to
-   [Chrome](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#google-chrome-opera-vivaldi)
-   or [Firefox](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#mozilla-firefox)
+   [Firefox](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#mozilla-firefox)
+
+### Chromium based browsers
+
+1. run `npm start zip.chrome` to create a zip file for the extension
+2. load the extension manually from `./web-ext-artifacts` directory to any
+   [Chromium based browser](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#google-chrome-opera-vivaldi)
 
 ## Contributing
 
