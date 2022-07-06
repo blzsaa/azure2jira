@@ -3,8 +3,9 @@ const manifestJsonTemplate = require("../src/manifest_template.json");
 
 const content = JSON.stringify(
   {
-    ...manifestJsonTemplate,
     version: process.env.npm_package_version,
+    ...manifestJsonTemplate.common,
+    ...manifestJsonTemplate[process.argv.slice(2)[0]],
   },
   null,
   2

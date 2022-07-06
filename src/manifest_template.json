@@ -1,33 +1,50 @@
 {
-  "manifest_version": 2,
-  "name": "Azure2Jira",
-  "background": {
-    "scripts": ["background.ts"]
+  "common": {
+    "name": "Azure2Jira",
+    "description": "Add links to Jira user stories from Azure UI",
+    "homepage_url": "https://github.com/blzsaa/azure2jira",
+    "icons": {
+      "16": "../icons/favicon-16x16.png",
+      "32": "../icons/favicon-32x32.png"
+    },
+    "options_ui": {
+      "page": "options/options.html",
+      "open_in_tab": true
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://dev.azure.com/*"],
+        "js": ["linkify-register.ts"]
+      }
+    ]
   },
-  "description": "Add links to Jira user stories from Azure UI",
-  "homepage_url": "https://github.com/blzsaa/azure2jira",
-  "icons": {
-    "16": "../icons/favicon-16x16.png",
-    "32": "../icons/favicon-32x32.png"
+  "v2": {
+    "manifest_version": 2,
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "{22562ff3-7277-4557-9446-0c399c09cfb9}"
+      }
+    },
+    "background": {
+      "scripts": ["background-mv2.ts"]
+    },
+    "browser_action": {
+      "default_icon": "../icons/favicon-32x32.png",
+      "default_title": "Azure2Jira"
+    },
+    "permissions": ["storage", "https://dev.azure.com/*"]
   },
-  "browser_action": {
-    "default_icon": "../icons/favicon-32x32.png",
-    "default_title": "Azure2Jira"
-  },
-  "options_ui": {
-    "page": "options/options.html",
-    "open_in_tab": true
-  },
-  "permissions": ["storage", "https://dev.azure.com/*"],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{22562ff3-7277-4557-9446-0c399c09cfb9}"
-    }
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://dev.azure.com/*"],
-      "js": ["linkify-register.ts"]
-    }
-  ]
+  "v3": {
+    "manifest_version": 3,
+    "background": {
+      "service_worker": "background-mv3.ts",
+      "type": "module"
+    },
+    "action": {
+      "default_icon": "../icons/favicon-32x32.png",
+      "default_title": "Azure2Jira"
+    },
+    "permissions": ["storage"],
+    "host_permissions": ["https://dev.azure.com/*"]
+  }
 }
