@@ -1,5 +1,4 @@
 import browser, { Tabs } from "webextension-polyfill";
-import Tab = Tabs.Tab;
 
 export async function saveOptions(e: Event) {
   e.preventDefault();
@@ -20,31 +19,30 @@ export async function saveOptions(e: Event) {
 async function refreshAzureDevopsTabs() {
   const tabs = await browser.tabs.query({ url: "https://dev.azure.com/*" });
   tabs
-    .map((tab: Tab) => tab.id)
+    .map((tab: Tabs.Tab) => tab.id)
     .forEach((id: number | undefined) => browser.tabs.reload(id));
 }
 
 export function createDummyJiraLinkFromInput() {
   const jiraBaseUrl =
-    document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value;
-  const example = document.querySelector<HTMLLinkElement>("#exampleJiraUrl");
-  if (example && jiraBaseUrl) {
-    const jiraLink = `${jiraBaseUrl}browse/ASD-123`;
-    example.innerText = jiraLink;
-    if (
-      document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.checkValidity()
-    ) {
-      example.href = jiraLink;
-    } else {
-      example.removeAttribute("href");
-    }
-  }
+    document.querySelector<HTMLInputElement>("#jiraBaseUrl")!.value ||
+    document.querySelector<HTMLInputElement>("#jiraBaseUrl")!.placeholder;
+  const dummyId =
+    document.querySelector<HTMLInputElement>("#dummy-jira-id")!.value ||
+    document.querySelector<HTMLInputElement>("#dummy-jira-id")!.placeholder;
+  const jiraLink = `${jiraBaseUrl}/browse/${dummyId}`;
+  const example = document.querySelector<HTMLLinkElement>("#exampleJiraUrl")!;
+  example.innerText = jiraLink;
+  example.href = jiraLink;
 }
 
 export async function loadCurrentValues() {
   const { jiraBaseUrl } = await browser.storage.sync.get("jiraBaseUrl");
-  document.querySelector<HTMLInputElement>("#jiraBaseUrl")!!.value =
-    jiraBaseUrl || "";
+  console.log("load" + jiraBaseUrl);
+  if (jiraBaseUrl) {
+    document.querySelector<HTMLInputElement>("#jiraBaseUrl")!!.value =
+      jiraBaseUrl;
+  }
   createDummyJiraLinkFromInput();
 }
 
@@ -54,5 +52,5 @@ document
   ?.addEventListener("submit", saveOptions);
 
 document
-  .querySelector<HTMLInputElement>("#jiraBaseUrl")
-  ?.addEventListener("input", createDummyJiraLinkFromInput);
+  .querySelectorAll<HTMLInputElement>("input")
+  .forEach((el) => el.addEventListener("input", createDummyJiraLinkFromInput));
