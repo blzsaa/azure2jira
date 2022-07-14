@@ -3,15 +3,14 @@ import {
   loadCurrentValues,
   saveOptions,
 } from "@/options/options";
+import * as fs from "fs";
 
 describe("Options", () => {
   beforeEach(() => {
-    document.body.innerHTML =
-      "<form>" +
-      ' <input id="jiraBaseUrl" type="url">' +
-      ' <div hidden id="success-message" class="alert-success center"/>' +
-      "</form>" +
-      '<a id="exampleJiraUrl"></a>';
+    document.body.innerHTML = fs.readFileSync(
+      "./src/options/options.html",
+      "utf8"
+    );
   });
 
   describe("saveOptions()", () => {
@@ -32,73 +31,93 @@ describe("Options", () => {
   });
 
   describe("createDummyJiraLinkFromInput()", () => {
-    it("should create a link to jira from the value of input when it is valid", async () => {
-      document.querySelector("input")!!.value = "https://asd.com/";
-      createDummyJiraLinkFromInput();
+    describe("when jiraBaseUrl and dummy-jira-id is empty", () => {
+      it("should use placeholder values to create the link", () => {
+        createDummyJiraLinkFromInput();
 
-      expect(document.querySelector("a")?.href).toBe(
-        "https://asd.com/browse/ASD-123"
-      );
+        expectLinkToBe("https://dummy-project.atlassian.net/browse/DUMMY-123");
+      });
     });
-    it("should only create a link to jira when the input is valid", async () => {
-      document.body.innerHTML =
-        '<input id="jiraBaseUrl" value="asdcom" type="url">' +
-        '<a id="exampleJiraUrl"></a>';
+    describe("when jiraBaseUrl is filled but dummy-jira-id is empty", () => {
+      it("should use value from jiraBaseUrl and placeholder value for jira-id to create the link", () => {
+        document.querySelector<HTMLInputElement>("#jiraBaseUrl")!!.value =
+          "https://asd.com";
 
-      createDummyJiraLinkFromInput();
+        createDummyJiraLinkFromInput();
 
-      expect(document.querySelector("a")?.href).toBe("");
+        expectLinkToBe("https://asd.com/browse/DUMMY-123");
+      });
+    });
+    describe("when jiraBaseUrl is empty but dummy-jira-id is filled", () => {
+      it("should use value from jiraBaseUrl and placeholder value for jira-id to create the link", () => {
+        document.querySelector<HTMLInputElement>("#dummy-jira-id")!!.value =
+          "ASD-123";
+
+        createDummyJiraLinkFromInput();
+
+        expectLinkToBe("https://dummy-project.atlassian.net/browse/ASD-123");
+      });
+    });
+    describe("when jiraBaseUrl and dummy-jira-id is filled", () => {
+      it("should use values from them", () => {
+        document.querySelector<HTMLInputElement>("#jiraBaseUrl")!!.value =
+          "https://asd.com";
+        document.querySelector<HTMLInputElement>("#dummy-jira-id")!!.value =
+          "ASD-123";
+
+        createDummyJiraLinkFromInput();
+
+        expectLinkToBe("https://asd.com/browse/ASD-123");
+      });
     });
   });
 
   describe("loadCurrentValues()", () => {
-    describe("should read jiraBaseUrl from storage and put it into the input field ", () => {
-      it("and link if it is a correct URL", async () => {
-        mockBrowser.storage.sync.get
-          .expect("jiraBaseUrl")
-          .andResolve({ jiraBaseUrl: "https://asd.com/" });
+    describe("when reading jiraBaseUrl from storage", () => {
+      describe("and jiraBaseUrl is already filled", () => {
+        it("should put the value in the input and create link based on it", async () => {
+          mockBrowser.storage.sync.get
+            .expect("jiraBaseUrl")
+            .andResolve({ jiraBaseUrl: "https://asd.com" });
 
-        await loadCurrentValues();
+          await loadCurrentValues();
 
-        expect(
-          document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value
-        ).toBe("https://asd.com/");
-        expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
-          "https://asd.com/browse/ASD-123"
-        );
-        expect(document.querySelector("a")?.href).toBe(
-          "https://asd.com/browse/ASD-123"
-        );
+          expect(
+            document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value
+          ).toBe("https://asd.com");
+          expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
+            "https://asd.com/browse/DUMMY-123"
+          );
+          expect(document.querySelector("a")?.href).toBe(
+            "https://asd.com/browse/DUMMY-123"
+          );
+        });
       });
-      it("but don't make it a link if it is not a correct URL", async () => {
-        mockBrowser.storage.sync.get
-          .expect("jiraBaseUrl")
-          .andResolve({ jiraBaseUrl: "notAnUrl/" });
+      describe("and jiraBaseUrl is undefined", () => {
+        it("should leave input empty and make link with the placeholder", async () => {
+          mockBrowser.storage.sync.get
+            .expect("jiraBaseUrl")
+            .andResolve({ jiraBaseUrl: undefined });
+          await loadCurrentValues();
 
-        await loadCurrentValues();
-
-        expect(
-          document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value
-        ).toBe("notAnUrl/");
-        expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
-          "notAnUrl/browse/ASD-123"
-        );
-        expect(document.querySelector("a")?.href).toBe("");
-      });
-      it("or put empty string if nullish value comes back from storage", async () => {
-        mockBrowser.storage.sync.get
-          .expect("jiraBaseUrl")
-          .andResolve({ jiraBaseUrl: undefined });
-        await loadCurrentValues();
-
-        expect(
-          document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value
-        ).toBe("");
-        expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
-          undefined
-        );
-        expect(document.querySelector("a")?.href).toBe("");
+          expect(
+            document.querySelector<HTMLInputElement>("#jiraBaseUrl")?.value
+          ).toBe("");
+          expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
+            "https://dummy-project.atlassian.net/browse/DUMMY-123"
+          );
+          expect(document.querySelector("a")?.href).toBe(
+            "https://dummy-project.atlassian.net/browse/DUMMY-123"
+          );
+        });
       });
     });
   });
+
+  function expectLinkToBe(comBrowseDUMMY123: string) {
+    expect(document.querySelector("a")?.href).toBe(comBrowseDUMMY123);
+    expect(document.querySelector<HTMLLinkElement>("a")?.innerText).toBe(
+      comBrowseDUMMY123
+    );
+  }
 });

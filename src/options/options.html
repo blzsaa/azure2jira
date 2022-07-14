@@ -15,13 +15,36 @@
 
     <form>
       <div class="row">
-        <div class="col-2"><label for="jiraBaseUrl">Jira base URL:</label></div>
+        <div class="col-2">
+          <label for="jiraBaseUrl"
+            >Jira URL:<span style="color: #ff0000">*</span></label
+          >
+        </div>
         <div class="col-10">
-          <input required style="width: 100%" id="jiraBaseUrl" type="url" />
+          <input
+            required
+            style="width: 100%"
+            id="jiraBaseUrl"
+            type="url"
+            placeholder="https://dummy-project.atlassian.net"
+          />
         </div>
       </div>
       <div class="row">
-        <div class="col-2 label-like">Link will be:</div>
+        <div class="col-2">
+          <label for="dummy-jira-id">Example Jira ID:</label>
+        </div>
+        <div class="col-10">
+          <input
+            style="width: 100%"
+            id="dummy-jira-id"
+            type="text"
+            placeholder="DUMMY-123"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 label-like">Generated link:</div>
         <div class="col-10">
           <a id="exampleJiraUrl"></a>
         </div>
