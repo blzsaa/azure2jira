@@ -1,5 +1,13 @@
 
 
+# [1.1.0](https://github.com/blzsaa/azure2jira/compare/1.0.0...1.1.0) (2022-07-20)
+
+
+### Features
+
+* **mv3:** generate manifest_version 3 version of the extension as well ([6d5bf68](https://github.com/blzsaa/azure2jira/commit/6d5bf68e14fdb7f6bc3855b17101c0d998d59085))
+* **options:** simplify options page ([11f097a](https://github.com/blzsaa/azure2jira/commit/11f097a3e5d4b751111da06bccf4c805b503500f))
+
 # 1.0.0 (2022-06-30)
 
 
