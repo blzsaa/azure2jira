@@ -5,6 +5,11 @@
 
 Azure2Jira adds links to Jira user stories from Azure UI
 
+## Install
+
+<a href="https://addons.mozilla.org/en-US/firefox/addon/azure2jira/"><img width="64" alt="Firefox" src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_logo%2C_2019.svg" /></a>
+<a href="https://chrome.google.com/webstore/detail/azure2jira/jcodoifcdfgcgclpkepanjdffjkkcngk"><img width="64" alt="Chrome" src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" /></a>
+
 ## Features
 
 - options page to set jira base url
@@ -24,20 +29,6 @@ Azure2Jira adds links to Jira user stories from Azure UI
    - `npm start chrome` for testing in chrome
    - `npm start test.watch.unit` for writing unit tests
    - `npm start test.watch.e2e` for writing e2e tests
-
-## Install the extension to a browser
-
-### Firefox
-
-1. run `npm start zip.firefox` to create a zip file for the extension
-2. load the extension manually from `./web-ext-artifacts` directory to
-   [Firefox](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#mozilla-firefox)
-
-### Chromium based browsers
-
-1. run `npm start zip.chrome` to create a zip file for the extension
-2. load the extension manually from `./web-ext-artifacts` directory to any
-   [Chromium based browser](https://www.smashingmagazine.com/2017/04/browser-extension-edge-chrome-firefox-opera-brave-vivaldi/#google-chrome-opera-vivaldi)
 
 ## Contributing
 
